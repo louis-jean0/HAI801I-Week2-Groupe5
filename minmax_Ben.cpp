@@ -3,9 +3,7 @@
 #include <vector>
 #include <ctime>
 
-// Function to evaluate the Tic-Tac-Toe board
 int evaluate(std::vector<std::vector<char>>& board) {
-    // Winning rows check
     for (int row = 0; row < 3; ++row) {
         if (board[row][0] == board[row][1] && board[row][1] == board[row][2]) {
             if (board[row][0] == 'X')
@@ -15,7 +13,6 @@ int evaluate(std::vector<std::vector<char>>& board) {
         }
     }
 
-    // Winning columns check
     for (int col = 0; col < 3; ++col) {
         if (board[0][col] == board[1][col] && board[1][col] == board[2][col]) {
             if (board[0][col] == 'X')
@@ -25,7 +22,6 @@ int evaluate(std::vector<std::vector<char>>& board) {
         }
     }
 
-    // Winning diagonals check
     if (board[0][0] == board[1][1] && board[1][1] == board[2][2]) {
         if (board[0][0] == 'X')
             return 10;
@@ -40,11 +36,9 @@ int evaluate(std::vector<std::vector<char>>& board) {
             return -10;
     }
 
-    // No winner
     return 0;
 }
 
-// Function to check if there are moves left on the board
 bool is_moves_left(const std::vector<std::vector<char>>& board) {
     for (const auto& row : board) {
         for (char cell : row) {
@@ -55,13 +49,10 @@ bool is_moves_left(const std::vector<std::vector<char>>& board) {
     return false;
 }
 
-// Minimax algorithm implementation
 int minimax(std::vector<std::vector<char>>& board, int depth, bool is_max);
 
-// Function to find the best move using the minimax algorithm
 std::pair<int, int> best_move(std::vector<std::vector<char>>& board, char player);
 
-// Function to simulate a Tic-Tac-Toe game
 int simulate_game(std::vector<std::vector<char>>& board, char player);
 
 int main() {
