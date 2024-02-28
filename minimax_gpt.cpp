@@ -7,9 +7,7 @@
 
 using namespace std;
 
-// Fonction pour évaluer l'état du jeu
 int evaluate(const vector<vector<char>>& board) {
-    // Lignes de victoire pour vérifier
     for (int row = 0; row < 3; row++) {
         if (board[row][0] == board[row][1] && board[row][1] == board[row][2]) {
             if (board[row][0] == 'X') return 10;
@@ -17,15 +15,13 @@ int evaluate(const vector<vector<char>>& board) {
         }
     }
 
-    // Colonnes de victoire pour vérifier
     for (int col = 0; col < 3; col++) {
         if (board[0][col] == board[1][col] && board[1][col] == board[2][col]) {
             if (board[0][col] == 'X') return 10;
             else if (board[0][col] == 'O') return -10;
         }
     }
-
-    // Diagonales de victoire pour vérifier
+    
     if (board[0][0] == board[1][1] && board[1][1] == board[2][2]) {
         if (board[0][0] == 'X') return 10;
         else if (board[0][0] == 'O') return -10;
@@ -36,10 +32,9 @@ int evaluate(const vector<vector<char>>& board) {
         else if (board[0][2] == 'O') return -10;
     }
 
-    return 0; // Pas de victoire
+    return 0;
 }
 
-// Fonction pour vérifier s'il reste des mouvements possibles sur le plateau
 bool isMovesLeft(const vector<vector<char>>& board) {
     for (const auto& row : board) {
         for (char cell : row) {
@@ -52,10 +47,8 @@ bool isMovesLeft(const vector<vector<char>>& board) {
 int minimax(vector<vector<char>>& board, int depth, bool isMax) {
     int score = evaluate(board);
 
-    // Si Maximizer a gagné le jeu ou Minimizer a gagné
     if (score == 10 || score == -10) return score;
 
-    // Si plus de mouvements possibles, c'est un match nul
     if (!isMovesLeft(board)) return 0;
 
     if (isMax) {
@@ -114,7 +107,7 @@ int simulateGame(vector<vector<char>>& board, char player) {
             board[move.first][move.second] = player;
             player = (player == 'X') ? 'O' : 'X';
         } else {
-            break; // Pas de coup possible, fin de la partie
+            break;
         }
     }
     return evaluate(board);
@@ -145,9 +138,9 @@ int main() {
 
     auto end = chrono::high_resolution_clock::now();
     chrono::duration<double> elapsed = end - start;
-    cout << "Nombre total de parties gagnées par 'X' : " << winsForX << endl;
-    cout << "Nombre total de parties gagnées par 'O' : " << winsForO << endl;
-    cout << "Nombre total de parties nulles : " << draw << endl;
+    cout << "Nombre total de parties gagnées par 'X' : " << winsForX <<" soit "<<((float)winsForX/cpt)*100<<"%"<<endl;
+    cout << "Nombre total de parties gagnées par 'O' : " << winsForO <<" soit "<<((float)winsForO/cpt)*100<<"%"<<endl;
+    cout << "Nombre total de parties nulles : " << draw <<" soit "<<((float)draw/cpt)*100<<"%"<<endl;
     cout << "Temps écoulé : " << elapsed.count() << "s" << endl;
 
     return 0;

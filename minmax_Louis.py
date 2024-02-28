@@ -2,7 +2,6 @@ import os
 import time
 
 def evaluate(board):
-    # Lignes de victoire pour vérifier
     for row in range(3):
         if board[row][0] == board[row][1] == board[row][2]:
             if board[row][0] == 'X':
@@ -10,7 +9,6 @@ def evaluate(board):
             elif board[row][0] == 'O':
                 return -10
 
-    # Colonnes de victoire pour vérifier
     for col in range(3):
         if board[0][col] == board[1][col] == board[2][col]:
             if board[0][col] == 'X':
@@ -18,7 +16,6 @@ def evaluate(board):
             elif board[0][col] == 'O':
                 return -10
 
-    # Diagonales de victoire pour vérifier
     if board[0][0] == board[1][1] == board[2][2]:
         if board[0][0] == 'X':
             return 10
@@ -31,11 +28,9 @@ def evaluate(board):
         elif board[0][2] == 'O':
             return -10
 
-    # Pas de victoire
     return 0
 
 def is_moves_left(board):
-    # Fonction pour vérifier s'il reste des mouvements possibles sur le plateau
     for row in board:
         if ' ' in row:
             return True
@@ -44,44 +39,35 @@ def is_moves_left(board):
 def minimax(board, depth, is_max):
     score = evaluate(board)
     
-    # Si Maximizer a gagné le jeu, retourne son score
     if score == 10:
-        return score #- depth
+        return score
 
-    # Si Minimizer a gagné le jeu, retourne son score
     if score == -10:
-        return score #+ depth
+        return score
 
-    # Si plus de mouvements possibles, c'est un match nul
     if not is_moves_left(board):
         return 0
 
     if is_max:
         best = -1000
-        # Traverse tous les cases
         for i in range(3):
             for j in range(3):
-                # Vérifie si la case est vide
                 if board[i][j] == ' ':
-                    # Fait le mouvement
                     board[i][j] = 'X'
-                    # Appelle récursivement minimax et choisit le maximum
                     best = max(best, minimax(board, depth + 1, not is_max))
-                    # Annule le mouvement
                     board[i][j] = ' '
         return best
     else:
         best = 1000
-        # Traverse tous les cases
         for i in range(3):
             for j in range(3):
-                # Vérifie si la case est vide
+                
                 if board[i][j] == ' ':
-                    # Fait le mouvement
+                   
                     board[i][j] = 'O'
-                    # Appelle récursivement minimax et choisit le minimum
+                    
                     best = min(best, minimax(board, depth + 1, not is_max))
-                    # Annule le mouvement
+                    
                     board[i][j] = ' '
         return best
 
@@ -104,11 +90,11 @@ def best_move(board, player):
 def simulate_game(board, player):
     while is_moves_left(board) and evaluate(board) == 0:
         move = best_move(board, player)
-        if move != (-1, -1):  # Si un coup valide a été trouvé
+        if move != (-1, -1):  
             board[move[0]][move[1]] = player
-            player = 'O' if player == 'X' else 'X'  # Change de joueur
+            player = 'O' if player == 'X' else 'X' 
         else:
-            break  # Pas de coup possible, fin de la partie
+            break  
     return evaluate(board)
 
 def main():
@@ -123,7 +109,7 @@ def main():
             player = line[0]
             board = [list(line[i:i+3]) for i in range(1, 10, 3)]
             result = simulate_game(board, player)
-            if result == 10:  # 'X' a gagné
+            if result == 10: 
                 wins_for_x += 1
             if result == -10:
                 wins_for_o += 1
